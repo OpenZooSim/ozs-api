@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-
 @MappedSuperclass
 public class BaseEntity {
     @Id
@@ -15,11 +13,11 @@ public class BaseEntity {
     @Column(name = "id")
     public Long id;
     @CreationTimestamp
-    @Column(name = "created")
-    public LocalDateTime Created;
+    @Column(name = "created_at")
+    public LocalDateTime CreatedAt;
     @UpdateTimestamp
-    @Column(name = "updated")
-    public LocalDateTime Updated;
+    @Column(name = "modified_at")
+    public LocalDateTime ModifiedAt;
 
     @Column(name = "is_archived")
     public boolean IsArchived;

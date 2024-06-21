@@ -20,8 +20,8 @@ public class UserService {
     public UserEntity CreateNewUser(String email, String password, String name) {
         UserEntity user = new UserEntity();
         user.Email = email.toLowerCase();
-        user.Password = password;
-        user.Name = name;
+        user.PasswordHash = password;
+        user.Username = name;
         _userRepository.persist(user);
         return user;
     }

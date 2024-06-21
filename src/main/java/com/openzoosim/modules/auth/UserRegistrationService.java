@@ -74,7 +74,7 @@ public class UserRegistrationService {
             return null;
         }
 
-        user.Verified = true;
+        user.IsVerified = true;
 
         _userRepository.persist(user);
 

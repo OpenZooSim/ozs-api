@@ -28,11 +28,11 @@ public class AuthLoginService {
 
         UserEntity user = _userService.GetUserByEmail(credentials[0]);
 
-        if(user == null || !user.Verified || user.IsArchived) {
+        if(user == null || !user.IsVerified || user.IsArchived) {
             throw new AuthenticationException("Invalid username or password.");
         }
 
-        boolean isPasswordVerified = BcryptUtil.matches(credentials[1], user.Password);
+        boolean isPasswordVerified = BcryptUtil.matches(credentials[1], user.PasswordHash);
 
         if (!isPasswordVerified) {
             throw new AuthenticationException("Invalid username or password.");
