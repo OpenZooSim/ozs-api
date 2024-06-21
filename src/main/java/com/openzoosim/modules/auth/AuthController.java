@@ -1,4 +1,4 @@
-package net.snowlynxsoftware.modules.auth;
+package com.openzoosim.modules.auth;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

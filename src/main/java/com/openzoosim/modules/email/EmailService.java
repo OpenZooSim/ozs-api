@@ -1,12 +1,13 @@
-package net.snowlynxsoftware.modules.email;
+package com.openzoosim.modules.email;
 
+import com.openzoosim.common.EnvService;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import net.snowlynxsoftware.common.EnvService;
 
 import java.io.IOException;
 

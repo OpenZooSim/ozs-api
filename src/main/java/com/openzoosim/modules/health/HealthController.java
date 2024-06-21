@@ -1,4 +1,4 @@
-package net.snowlynxsoftware.modules.health;
+package com.openzoosim.modules.health;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

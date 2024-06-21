@@ -1,4 +1,4 @@
-package net.snowlynxsoftware.modules.auth;
+package com.openzoosim.modules.auth;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

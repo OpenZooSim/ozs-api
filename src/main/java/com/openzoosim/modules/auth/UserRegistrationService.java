@@ -1,13 +1,14 @@
-package net.snowlynxsoftware.modules.auth;
+package com.openzoosim.modules.auth;
+
+import com.openzoosim.modules.email.EmailService;
+import com.openzoosim.modules.jwt.TokenService;
+import com.openzoosim.modules.user.UserEntity;
+import com.openzoosim.modules.user.UserRepository;
+import com.openzoosim.modules.user.UserService;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import net.snowlynxsoftware.modules.email.EmailService;
-import net.snowlynxsoftware.modules.jwt.TokenService;
-import net.snowlynxsoftware.modules.user.UserEntity;
-import net.snowlynxsoftware.modules.user.UserRepository;
-import net.snowlynxsoftware.modules.user.UserService;
 
 @ApplicationScoped
 public class UserRegistrationService {

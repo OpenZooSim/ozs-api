@@ -1,13 +1,15 @@
-package net.snowlynxsoftware.modules.auth;
+package com.openzoosim.modules.auth;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import net.snowlynxsoftware.modules.jwt.TokenService;
-import net.snowlynxsoftware.modules.user.UserEntity;
-import net.snowlynxsoftware.modules.user.UserService;
 
 import javax.naming.AuthenticationException;
+
+import com.openzoosim.modules.jwt.TokenService;
+import com.openzoosim.modules.user.UserEntity;
+import com.openzoosim.modules.user.UserService;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 

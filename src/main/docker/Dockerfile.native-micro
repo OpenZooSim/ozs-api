@@ -10,11 +10,11 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.native-micro -t quarkus/vt-api .
+# docker build -f src/main/docker/Dockerfile.native-micro -t quarkus/ozs-api .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 quarkus/vt-api
+# docker run -i --rm -p 8080:8080 quarkus/ozs-api
 #
 ###
 FROM quay.io/quarkus/quarkus-micro-image:2.0

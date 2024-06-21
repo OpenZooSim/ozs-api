@@ -1,8 +1,9 @@
-package net.snowlynxsoftware.modules.auth;
+package com.openzoosim.modules.auth;
+
+import com.openzoosim.modules.jwt.TokenService;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import net.snowlynxsoftware.modules.jwt.TokenService;
 
 @ApplicationScoped
 public class AuthorizeService {

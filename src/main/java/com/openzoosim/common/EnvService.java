@@ -1,4 +1,4 @@
-package net.snowlynxsoftware.common;
+package com.openzoosim.common;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;

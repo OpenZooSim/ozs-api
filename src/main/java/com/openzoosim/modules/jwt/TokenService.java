@@ -1,12 +1,14 @@
-package net.snowlynxsoftware.modules.jwt;
+package com.openzoosim.modules.jwt;
 
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import net.snowlynxsoftware.common.EnvService;
-import net.snowlynxsoftware.modules.user.UserService;
+
 import org.eclipse.microprofile.jwt.JsonWebToken;
+
+import com.openzoosim.common.EnvService;
+import com.openzoosim.modules.user.UserService;
 
 @ApplicationScoped
 public class TokenService {

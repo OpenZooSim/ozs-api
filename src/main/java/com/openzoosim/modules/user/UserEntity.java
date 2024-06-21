@@ -1,11 +1,12 @@
-package net.snowlynxsoftware.modules.user;
+package com.openzoosim.modules.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import net.snowlynxsoftware.common.BaseEntity;
 
 import java.time.LocalDateTime;
+
+import com.openzoosim.common.BaseEntity;
 
 @Entity
 @Table(name = "users")

@@ -1,4 +1,4 @@
-package net.snowlynsoftware;
+package com.openzoosim;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 

@@ -1,4 +1,4 @@
-package net.snowlynxsoftware.modules.auth;
+package com.openzoosim.modules.auth;
 
 public class UserRegistrationRequestDTO {
     public String email;

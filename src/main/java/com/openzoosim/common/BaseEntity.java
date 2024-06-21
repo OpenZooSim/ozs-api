@@ -1,4 +1,4 @@
-package net.snowlynxsoftware.common;
+package com.openzoosim.common;
 
 import java.time.LocalDateTime;
 

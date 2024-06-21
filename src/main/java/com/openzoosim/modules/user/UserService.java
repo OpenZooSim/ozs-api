@@ -1,4 +1,4 @@
-package net.snowlynxsoftware.modules.user;
+package com.openzoosim.modules.user;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
