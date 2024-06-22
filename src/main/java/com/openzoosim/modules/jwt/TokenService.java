@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import com.openzoosim.common.EnvService;
+import com.openzoosim.common.RandomStringGenerator;
 import com.openzoosim.modules.user.UserService;
 
 @ApplicationScoped
@@ -28,6 +29,10 @@ public class TokenService {
 
     @Inject
     UserService userService;
+
+    public String GenerateRandomString(int length) {
+        return RandomStringGenerator.generateRandomString(length);
+    }
 
     public String GenerateVerificationToken(String email) {
         return Jwt

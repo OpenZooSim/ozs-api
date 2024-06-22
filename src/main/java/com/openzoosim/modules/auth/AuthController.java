@@ -14,6 +14,9 @@ public class AuthController {
     UserRegistrationService _userRegistrationService;
 
     @Inject
+    UserPasswordResetService _userPasswordResetService;
+
+    @Inject
     AuthLoginService _loginService;
 
     @Path("/register")
@@ -84,5 +87,28 @@ public class AuthController {
             throw new WebApplicationException(ex.getMessage(), 401);
         }
     }
+
+    @Path("/password-reset-request")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public String PasswordResetRequest(UserPasswordResetRequestDTO req) {
+        if (
+                req.email == null || req.email.isEmpty()
+        ) {
+            throw new WebApplicationException("BAD REQUEST - email is required!", 400);
+        }
+
+        try {
+            // TODO: We should log unsuccessful requests later.
+            _userPasswordResetService.RequestPasswordResetForUser(req);
+
+            String messageResponse = "If you provided an email that can be found in our system, you will receive " +
+            "an email with further instructions. Please note that if you have been banned, this process will not work!";
+            return messageResponse;
+        } catch (Exception ex) {
+            throw new WebApplicationException(ex.getMessage(), 400);
+        }
+    }    
 }
 

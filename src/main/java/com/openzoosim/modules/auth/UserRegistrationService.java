@@ -1,5 +1,6 @@
 package com.openzoosim.modules.auth;
 
+import com.openzoosim.common.CryptoService;
 import com.openzoosim.modules.email.EmailService;
 import com.openzoosim.modules.jwt.TokenService;
 import com.openzoosim.modules.user.UserEntity;
@@ -36,7 +37,7 @@ public class UserRegistrationService {
             return res;
         }
 
-        String hashedPassword = BcryptUtil.bcryptHash(dto.password, 13);
+        String hashedPassword = CryptoService.HashString(dto.password);
 
         user = _userService.CreateNewUser(dto.email, hashedPassword, dto.name);
 

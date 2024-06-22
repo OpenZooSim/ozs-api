@@ -1,7 +1,6 @@
 package com.openzoosim.modules.health;
 
-import com.openzoosim.modules.user.UserDTO;
-import com.openzoosim.modules.user.UserService;
+import com.openzoosim.common.EnvService;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -13,13 +12,11 @@ import jakarta.ws.rs.core.MediaType;
 public class HealthController {
 
     @Inject
-    UserService _userService;
+    EnvService _envService;
 
     @GET
-    // @Produces(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
-    public UserDTO GetHealthCheck() throws Exception {
-
-        return new UserDTO(_userService.GetUserByEmail("dylanlegendre09@gmail.com"));
+    @Produces(MediaType.TEXT_PLAIN)
+    public String GetHealthCheck() throws Exception {
+        return "ok:" + _envService.GetAppVersion();
     }
 }

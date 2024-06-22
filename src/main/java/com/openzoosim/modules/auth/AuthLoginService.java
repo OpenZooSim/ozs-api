@@ -1,11 +1,11 @@
 package com.openzoosim.modules.auth;
 
-import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import javax.naming.AuthenticationException;
 
+import com.openzoosim.common.CryptoService;
 import com.openzoosim.modules.jwt.TokenService;
 import com.openzoosim.modules.user.UserEntity;
 import com.openzoosim.modules.user.UserService;
@@ -32,7 +32,7 @@ public class AuthLoginService {
             throw new AuthenticationException("Invalid username or password.");
         }
 
-        boolean isPasswordVerified = BcryptUtil.matches(credentials[1], user.PasswordHash);
+        boolean isPasswordVerified = CryptoService.VerifyHash(credentials[1], user.PasswordHash);
 
         if (!isPasswordVerified) {
             throw new AuthenticationException("Invalid username or password.");
