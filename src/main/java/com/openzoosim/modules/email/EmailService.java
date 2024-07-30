@@ -19,7 +19,7 @@ public class EmailService {
 
     public boolean SendEmail(String to, String from, String subject, String text) {
         try {
-            SendGrid sg = new SendGrid(_envService.GetSendgridAPIKey());
+            SendGrid sg = new SendGrid(_envService.GetEmailProviderAPIKey());
             Request request = new Request();
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");

@@ -13,8 +13,8 @@ public class EnvService {
     @ConfigProperty(name = "ozs.jwt.secret")
     String JWT_TOKEN_SECRET;
 
-    @ConfigProperty(name = "sendgrid.api.key")
-    String SENDGRID_API_KEY;
+    @ConfigProperty(name = "email.provider.api.key")
+    String EMAIL_PROVIDER_API_KEY;
 
     public String GetAppVersion() { return OZS_APP_VERSION; }
 
@@ -22,5 +22,5 @@ public class EnvService {
         return JWT_TOKEN_SECRET;
     }
 
-    public String GetSendgridAPIKey() { return SENDGRID_API_KEY; }
+    public String GetEmailProviderAPIKey() { return EMAIL_PROVIDER_API_KEY; }
 }
