@@ -2,8 +2,6 @@ package com.openzoosim.services.config;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import java.util.Optional;
-
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import com.openzoosim.models.interfaces.IEnvService;
@@ -11,10 +9,7 @@ import com.openzoosim.models.interfaces.IEnvService;
 @ApplicationScoped
 public class EnvService implements IEnvService {
     @ConfigProperty(name = "mrl.app.version")
-    String MRL_APP_VERSION;
-
-    @ConfigProperty(name = "mrl.test.mode")
-    Optional<String> TEST_MODE;    
+    String MRL_APP_VERSION;  
 
     @ConfigProperty(name = "mrl.jwt.secret")
     String JWT_TOKEN_SECRET;
@@ -32,10 +27,6 @@ public class EnvService implements IEnvService {
     String EMAIL_PROVIDER_API_KEY;
 
     public String GetAppVersion() { return MRL_APP_VERSION; }
-
-    public boolean GetIsTestMode() {
-        return TEST_MODE.isPresent();
-    }
 
     public String GetJWTTokenSecret() {
         return JWT_TOKEN_SECRET;

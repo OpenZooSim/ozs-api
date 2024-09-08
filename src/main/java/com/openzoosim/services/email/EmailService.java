@@ -25,10 +25,6 @@ public class EmailService implements IEmailService {
 
     public boolean sendEmail(String to, String from, String subject, String text) {
         try {
-            // If we are in test mode, skip trying to send the email and just return true.
-            if (this._envService.get().GetIsTestMode()) {
-                return true;
-            }
             SendGrid sg = new SendGrid(_envService.get().GetEmailProviderAPIKey());
             Request request = new Request();
             request.setMethod(Method.POST);
