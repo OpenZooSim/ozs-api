@@ -1,0 +1,29 @@
+{
+    "name": "@openzoosim/ozs-api",
+    "version": "1.0.0",
+    "description": "The Official OpenZooSim API",
+    "private": true,
+    "scripts": {
+        "start": "npm run serve:local",
+        "build": "npx tsc",
+        "serve:local": "tsc-watch --onSuccess \"node dist/main.js\""
+    },
+    "author": "morpheuszero",
+    "license": "gplv3",
+    "prettier": {
+        "tabWidth": 4
+    },
+    "dependencies": {
+        "express": "^5.0.0",
+        "reflect-metadata": "^0.2.2",
+        "tsyringe": "^4.8.0"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.0",
+        "@types/node": "^22.7.5",
+        "prettier": "^3.3.3",
+        "ts-node": "^10.9.2",
+        "tsc-watch": "^6.2.0",
+        "typescript": "^5.6.3"
+    }
+}
