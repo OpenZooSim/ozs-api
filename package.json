@@ -6,7 +6,13 @@
     "scripts": {
         "start": "npm run serve:local",
         "build": "npx tsc",
-        "serve:local": "tsc-watch --onSuccess \"node dist/main.js\""
+        "serve:local": "tsc-watch --onSuccess \"node dist/main.js\"",
+        "typeorm": "NODE_ENV=migrations typeorm-ts-node-commonjs",
+        "schema:sync": "npm run typeorm schema:sync -- -d ./src/providers/datasource.provider.ts",
+        "migration:run": "NODE_ENV=migrations ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/providers/datasource.provider.ts",
+        "migration:show": "npm run typeorm migration:show -- -d ./src/providers/datasource.provider.ts",
+        "migration:generate": "npm run typeorm migration:generate -- -d ./src/providers/datasource.provider.ts",
+        "migration:create": "npm run typeorm migration:create"
     },
     "author": "morpheuszero",
     "license": "gplv3",

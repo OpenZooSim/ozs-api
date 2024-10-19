@@ -3,6 +3,7 @@ import express from "express";
 import { Server } from "http";
 import { EnvService } from "./services/env.service";
 import { Database } from "./database/database";
+import { ControllerManager } from "./controllers/controller.manager";
 
 @singleton()
 export class AppServer {
@@ -17,6 +18,9 @@ export class AppServer {
 
         // Initialize DB Connection
         await Database.InitializeDBConnection();
+
+        // Setup Controller
+        this._app.use(ControllerManager.InitializeAppControllers());
 
         return this._app.listen(3000);
     }
