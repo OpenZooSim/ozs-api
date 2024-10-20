@@ -15,4 +15,25 @@ export class UserEntity extends BaseEntity {
 
     @Column()
     passwordHash!: string;
+
+    @Column({
+        default: false,
+    })
+    emailVerified!: boolean;
+
+    @Column({
+        default: "",
+    })
+    avatarURL!: string;
+
+    @Column({
+        nullable: true,
+        default: null,
+    })
+    lastLoginDate!: Date;
+
+    @Column({
+        default: true,
+    })
+    allowMarketingEmails!: boolean;
 }
