@@ -97,3 +97,44 @@ func (r *UserRepository) UpdateUserLastLogin(userId *int) (bool, error) {
 
 	return true, nil
 }
+
+func (r *UserRepository) BanUserByIdWithReason(userId *int, reason string) (bool, error) {
+	sql := `UPDATE users
+		SET
+			is_banned = true,
+			ban_reason = $1
+		WHERE id = $2;`
+	_, err := r.DB.DB.Exec(sql, reason, &userId)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (r *UserRepository) UnbanUserById(userId *int) (bool, error) {
+	sql := `UPDATE users
+		SET
+			is_banned = false,
+			ban_reason = ''
+		WHERE id = $1;`
+	_, err := r.DB.DB.Exec(sql, &userId)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (r *UserRepository) SetCanUseAPIKeysByUserId(userId *int, value bool) (bool, error) {
+	sql := `UPDATE users
+		SET
+			can_use_api_keys = $1
+		WHERE id = $2;`
+	_, err := r.DB.DB.Exec(sql, value, &userId)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
