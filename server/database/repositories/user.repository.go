@@ -138,3 +138,16 @@ func (r *UserRepository) SetCanUseAPIKeysByUserId(userId *int, value bool) (bool
 
 	return true, nil
 }
+
+func (r *UserRepository) SetUserTypeId(userId *int, typeId *int) (bool, error) {
+	sql := `UPDATE users
+		SET
+			user_type_id = $1
+		WHERE id = $2;`
+	_, err := r.DB.DB.Exec(sql, &typeId, &userId)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
