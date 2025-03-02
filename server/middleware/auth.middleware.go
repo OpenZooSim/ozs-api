@@ -5,16 +5,19 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/snowlynxsoftware/ozs-api/server/database/repositories"
 	"github.com/snowlynxsoftware/ozs-api/server/services"
 )
 
 type AuthMiddleware struct {
 	UserService *services.UserService
+	UserTypeRepository *repositories.UserTypeRepository
 }
 
-func NewAuthMiddleware(userService *services.UserService) *AuthMiddleware {
+func NewAuthMiddleware(userService *services.UserService, userTypeRepo *repositories.UserTypeRepository) *AuthMiddleware {
 	return &AuthMiddleware{
 		UserService: userService,
+		UserTypeRepository: userTypeRepo,
 	}
 }
 
@@ -58,7 +61,24 @@ func (m *AuthMiddleware) Authorize(r *http.Request, requiredUserTypeKeys []strin
 		return nil, errors.New("user is banned. Reason - " + *userEntity.BanReason)
 	}
 
-	// TODO: Check User Type here.
+	userTypeEntity, err := m.UserTypeRepository.GetUserTypeById(*userEntity.UserTypeID)
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil, err
+	}
+
+	if requiredUserTypeKeys != nil {
+		isUserTypeAllowed := false
+		for _, key := range requiredUserTypeKeys {
+			if userTypeEntity.Key == key {
+				isUserTypeAllowed = true
+				break
+			}
+		}
+		if !isUserTypeAllowed {
+			return nil, errors.New("forbidden - user type is not allowed")
+		}
+	}
 
 	return &AuthorizedUserContext{
 		Id:       int(userEntity.ID),

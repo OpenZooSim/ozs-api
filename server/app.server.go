@@ -39,6 +39,7 @@ func (s *AppServer) Start() {
 	s.DB.Connect(s.AppConfig.DBConnectionString)
 
 	// Configure Repositories
+	userTypeRepository := repositories.NewUserTypeRepository(s.DB)
 	userRepository := repositories.NewUserRepository(s.DB)
 
 	// Configure Services
@@ -49,7 +50,7 @@ func (s *AppServer) Start() {
 	userService := services.NewUserService(userRepository, tokenService)
 
 	// Configure Middleware
-	authMiddleware := middleware.NewAuthMiddleware(userService)
+	authMiddleware := middleware.NewAuthMiddleware(userService, userTypeRepository)
 
 	// Configure Controllers
 	s.Router.Mount("/health", controllers.NewHealthController().MapController())
