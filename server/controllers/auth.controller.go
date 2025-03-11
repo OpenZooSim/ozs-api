@@ -37,6 +37,7 @@ func (c *AuthController) MapController() *chi.Mux {
 
 	// Protected Routes
 	router.Get("/token", c.tokenInfo)
+	router.Post("/update-password/self", c.updateSelfPassword)
 	return router
 }
 
@@ -60,7 +61,7 @@ func (c *AuthController) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(response.AccessToken)
+	// log.Info().Str("Access Token: ", response.AccessToken).Msg("")
 
 	http.SetCookie(w, &http.Cookie{
 		Name:     "access_token",
@@ -111,7 +112,7 @@ func (c *AuthController) register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if userCreateDTO.Username == "" || userCreateDTO.Password == "" || userCreateDTO.Email == "" {
+	if userCreateDTO.DisplayName == "" || userCreateDTO.Password == "" || userCreateDTO.Email == "" {
 		http.Error(w, "Email, Username, and Password are required", http.StatusBadRequest)
 		return
 	}
@@ -193,5 +194,33 @@ func (c *AuthController) tokenInfo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(returnStr)
+
+}
+
+func (c *AuthController) updateSelfPassword(w http.ResponseWriter, r *http.Request) {
+
+	userContext, err := c.AuthMiddleware.Authorize(r, nil)
+	if err != nil {
+		fmt.Println(err.Error())
+		http.Error(w, "an error occurred when attempting to get token info", http.StatusUnauthorized)
+		return
+	}
+
+	var userUpdatePasswordDto models.UserUpdatePasswordDTO
+	err = json.NewDecoder(r.Body).Decode(&userUpdatePasswordDto)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	_, err = c.AuthService.UpdateUserPassword(&userContext.Id, userUpdatePasswordDto.Password)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("password updated successfully"))
 
 }

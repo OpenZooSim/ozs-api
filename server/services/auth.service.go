@@ -68,7 +68,7 @@ func (s *AuthService) SendLoginEmail(email string) (*repositories.UserEntity, er
 
 	var user, err = s.UserRepository.GetUserByEmail(email)
 	if err != nil {
-		return nil, errors.New("user does not exist")
+		return nil, err
 	}
 
 	if user.IsBanned {
@@ -119,6 +119,21 @@ func (s *AuthService) VerifyNewUser(verificationToken *string) (*int, error) {
 	_, err = s.UserRepository.MarkUserVerified(userId)
 	if err != nil {
 		fmt.Println(err.Error())
+		return nil, err
+	}
+
+	return userId, nil
+}
+
+func (s *AuthService) UpdateUserPassword(userId *int, password string) (*int, error) {
+
+	hashedPassword, err := s.CryptoService.HashPassword(password)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = s.UserRepository.UpdateUserPassword(userId, *hashedPassword)
+	if err != nil {
 		return nil, err
 	}
 

@@ -10,13 +10,13 @@ import (
 )
 
 type AuthMiddleware struct {
-	UserService *services.UserService
+	UserService        *services.UserService
 	UserTypeRepository *repositories.UserTypeRepository
 }
 
 func NewAuthMiddleware(userService *services.UserService, userTypeRepo *repositories.UserTypeRepository) *AuthMiddleware {
 	return &AuthMiddleware{
-		UserService: userService,
+		UserService:        userService,
 		UserTypeRepository: userTypeRepo,
 	}
 }
@@ -83,7 +83,7 @@ func (m *AuthMiddleware) Authorize(r *http.Request, requiredUserTypeKeys []strin
 	return &AuthorizedUserContext{
 		Id:       int(userEntity.ID),
 		Email:    userEntity.Email,
-		Username: userEntity.Username,
+		Username: userEntity.DisplayName,
 	}, nil
 
 }

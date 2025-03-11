@@ -7,12 +7,12 @@ import (
 )
 
 type UserTypeEntity struct {
-	ID            int64      `json:"id" db:"id"`
-	CreatedAt     time.Time  `json:"created_at" db:"created_at"`
-	ModifiedAt    *time.Time `json:"modified_at" db:"modified_at"`
-	IsArchived    bool       `json:"is_archived" db:"is_archived"`
-	Name         string     `json:"name" db:"name"`
-	Key      string     `json:"key" db:"key"`
+	ID         int64      `json:"id" db:"id"`
+	CreatedAt  time.Time  `json:"created_at" db:"created_at"`
+	ModifiedAt *time.Time `json:"modified_at" db:"modified_at"`
+	IsArchived bool       `json:"is_archived" db:"is_archived"`
+	Name       string     `json:"name" db:"name"`
+	Key        string     `json:"key" db:"key"`
 }
 
 type UserTypeRepository struct {

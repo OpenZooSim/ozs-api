@@ -13,7 +13,9 @@ type UserEntity struct {
 	ModifiedAt    *time.Time `json:"modified_at" db:"modified_at"`
 	IsArchived    bool       `json:"is_archived" db:"is_archived"`
 	Email         string     `json:"email" db:"email"`
-	Username      string     `json:"username" db:"username"`
+	DisplayName   string     `json:"display_name" db:"display_name"`
+	AvatarURL     *string    `json:"avatar_url" db:"avatar_url"`
+	ProfileText   *string    `json:"profile_text" db:"profile_text"`
 	IsVerified    bool       `json:"is_verified" db:"is_verified"`
 	UserTypeID    *int       `json:"user_type_id" db:"user_type_id"`
 	PasswordHash  *string    `json:"-" db:"password_hash"`
@@ -60,10 +62,10 @@ func (r *UserRepository) GetUserByEmail(email string) (*UserEntity, error) {
 }
 
 func (r *UserRepository) CreateNewUser(dto *models.UserCreateDTO) (*UserEntity, error) {
-	sql := `INSERT INTO users (email, username, password_hash)
+	sql := `INSERT INTO users (email, display_name, password_hash)
     VALUES ($1, $2, $3)
     RETURNING id;`
-	row := r.DB.DB.QueryRow(sql, dto.Email, dto.Username, dto.Password)
+	row := r.DB.DB.QueryRow(sql, dto.Email, dto.DisplayName, dto.Password)
 	var insertedId int
 	err := row.Scan(&insertedId)
 	if err != nil {
@@ -91,6 +93,16 @@ func (r *UserRepository) MarkUserVerified(userId *int) (bool, error) {
 func (r *UserRepository) UpdateUserLastLogin(userId *int) (bool, error) {
 	sql := `UPDATE users SET last_login = NOW() WHERE id = $1;`
 	_, err := r.DB.DB.Exec(sql, &userId)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (r *UserRepository) UpdateUserPassword(userId *int, password string) (bool, error) {
+	sql := `UPDATE users SET password_hash = $1 WHERE id = $2;`
+	_, err := r.DB.DB.Exec(sql, password, &userId)
 	if err != nil {
 		return false, err
 	}
