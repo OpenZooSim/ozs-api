@@ -29,7 +29,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: registry.digitalocean.com/YOUR_REGISTRY/YOUR_IMAGE:latest
+          tags: registry.digitalocean.com/openzoosim/ozs-api:latest
 
       - name: SSH into DigitalOcean Droplet and update image
         uses: appleboy/ssh-action@v0.1.7
@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.DROPLET_USERNAME }}
           key: ${{ secrets.DROPLET_SSH_KEY }}
           script: |
-            docker pull registry.digitalocean.com/YOUR_REGISTRY/YOUR_IMAGE:latest
-            docker stop YOUR_CONTAINER_NAME || true
-            docker rm YOUR_CONTAINER_NAME || true
-            docker run -d --name YOUR_CONTAINER_NAME -p 3000:3000 registry.digitalocean.com/YOUR_REGISTRY/YOUR_IMAGE:latest
+            docker pull registry.digitalocean.com/openzoosim/ozs-api:latest
+            docker stop ozs-api || true
+            docker rm ozs-api || true
+            docker run -d --name ozs-api -p 3000:3000 registry.digitalocean.com/openzoosim/ozs-api:latest
