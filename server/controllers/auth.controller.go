@@ -10,6 +10,7 @@ import (
 	"github.com/snowlynxsoftware/ozs-api/server/middleware"
 	"github.com/snowlynxsoftware/ozs-api/server/models"
 	"github.com/snowlynxsoftware/ozs-api/server/services"
+	"github.com/snowlynxsoftware/ozs-api/server/util"
 )
 
 type AuthController struct {
@@ -94,7 +95,7 @@ func (c *AuthController) sendLoginEmail(w http.ResponseWriter, r *http.Request) 
 
 	userEntity, err := c.AuthService.SendLoginEmail(strings.ToLower(userCreateDTO.Email))
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		http.Error(w, "an error occurred when attempting to send the login email", http.StatusInternalServerError)
 		return
 	}
@@ -119,7 +120,7 @@ func (c *AuthController) register(w http.ResponseWriter, r *http.Request) {
 
 	userEntity, err := c.AuthService.RegisterNewUser(&userCreateDTO)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		http.Error(w, "an error occurred when attempting to register your user", http.StatusInternalServerError)
 		return
 	}
@@ -134,14 +135,14 @@ func (c *AuthController) loginWithEmail(w http.ResponseWriter, r *http.Request) 
 
 	userId, err := c.AuthService.VerifyNewUser(&verificationToken)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	response, err := c.AuthService.LoginWithEmailLink(userId)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
@@ -180,7 +181,7 @@ func (c *AuthController) tokenInfo(w http.ResponseWriter, r *http.Request) {
 
 	userContext, err := c.AuthMiddleware.Authorize(r, nil)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		http.Error(w, "an error occurred when attempting to get token info", http.StatusUnauthorized)
 		return
 	}
@@ -201,7 +202,7 @@ func (c *AuthController) updateSelfPassword(w http.ResponseWriter, r *http.Reque
 
 	userContext, err := c.AuthMiddleware.Authorize(r, nil)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		http.Error(w, "an error occurred when attempting to get token info", http.StatusUnauthorized)
 		return
 	}

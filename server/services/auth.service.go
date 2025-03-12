@@ -3,27 +3,29 @@ package services
 import (
 	"encoding/base64"
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/snowlynxsoftware/ozs-api/server/database/repositories"
 	"github.com/snowlynxsoftware/ozs-api/server/models"
+	"github.com/snowlynxsoftware/ozs-api/server/util"
 )
 
 type AuthService struct {
-	UserRepository *repositories.UserRepository
-	TokenService   *TokenService
-	CryptoService  *CryptoService
-	EmailService   *EmailService
+	UserRepository          *repositories.UserRepository
+	UserLastLoginRepository *repositories.UserLoginHistoryRepository
+	TokenService            *TokenService
+	CryptoService           *CryptoService
+	EmailService            *EmailService
 }
 
 func NewAuthService(
 	userRepository *repositories.UserRepository,
+	userLoginHistoryRepository *repositories.UserLoginHistoryRepository,
 	tokenService *TokenService,
 	cryptoService *CryptoService,
 	emailService *EmailService,
 ) *AuthService {
-	return &AuthService{UserRepository: userRepository, TokenService: tokenService, CryptoService: cryptoService, EmailService: emailService}
+	return &AuthService{UserRepository: userRepository, UserLastLoginRepository: userLoginHistoryRepository, TokenService: tokenService, CryptoService: cryptoService, EmailService: emailService}
 }
 
 func (s *AuthService) RegisterNewUser(dto *models.UserCreateDTO) (*repositories.UserEntity, error) {
@@ -98,7 +100,7 @@ func (s *AuthService) LoginWithEmailLink(userId *int) (*models.UserLoginResponse
 
 	accessToken, err := s.TokenService.GenerateAccessToken(*userId)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		return nil, errors.New("there was an issue trying to log this user in")
 	}
 
@@ -112,13 +114,13 @@ func (s *AuthService) VerifyNewUser(verificationToken *string) (*int, error) {
 
 	var userId, err = s.TokenService.ValidateToken(verificationToken)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		return nil, errors.New("the token could not be verified")
 	}
 
 	_, err = s.UserRepository.MarkUserVerified(userId)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		return nil, err
 	}
 
@@ -169,6 +171,12 @@ func (s *AuthService) Login(authHeaderStr *string) (*models.UserLoginResponseDTO
 	accessToken, err := s.TokenService.GenerateAccessToken(int(user.ID))
 	if err != nil {
 		return nil, errors.New("there was an issue trying to log this user in")
+	}
+
+	userId := int(user.ID)
+	err = s.UserLastLoginRepository.CreateLoginHistoryForUser(&userId)
+	if err != nil {
+		util.LogErrorWithStackTrace(err)
 	}
 
 	return &models.UserLoginResponseDTO{

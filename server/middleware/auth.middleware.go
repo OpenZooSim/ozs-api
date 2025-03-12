@@ -2,11 +2,11 @@ package middleware
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/snowlynxsoftware/ozs-api/server/database/repositories"
 	"github.com/snowlynxsoftware/ozs-api/server/services"
+	"github.com/snowlynxsoftware/ozs-api/server/util"
 )
 
 type AuthMiddleware struct {
@@ -33,19 +33,19 @@ func (m *AuthMiddleware) Authorize(r *http.Request, requiredUserTypeKeys []strin
 
 	cookie, err := r.Cookie("access_token")
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		return nil, errors.New("access token not found in request")
 	}
 
 	userId, err := m.UserService.TokenService.ValidateToken(&cookie.Value)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		return nil, err
 	}
 
 	userEntity, err := m.UserService.GetUserById(*userId)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		return nil, err
 	}
 
@@ -63,7 +63,7 @@ func (m *AuthMiddleware) Authorize(r *http.Request, requiredUserTypeKeys []strin
 
 	userTypeEntity, err := m.UserTypeRepository.GetUserTypeById(*userEntity.UserTypeID)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		return nil, err
 	}
 

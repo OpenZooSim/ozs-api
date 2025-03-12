@@ -2,10 +2,10 @@ package services
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
+	"github.com/snowlynxsoftware/ozs-api/server/util"
 )
 
 type EmailService struct {
@@ -35,13 +35,13 @@ func (s *EmailService) SendEmail(options *EmailSendOptions) bool {
 	message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
 	response, err := s.client.Send(message)
 	if err != nil {
-		log.Println(err)
+		util.LogErrorWithStackTrace(err)
 		return false
 	} else {
 		if response.StatusCode != 202 {
-			fmt.Println(response.StatusCode)
-			fmt.Println(response.Body)
-			fmt.Println(response.Headers)
+			util.LogWarning(string(rune(response.StatusCode)))
+			util.LogWarning(response.Body)
+			util.LogWarning(fmt.Sprintf("%v", response.Headers))
 			return false
 		}
 		return true

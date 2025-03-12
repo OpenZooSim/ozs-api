@@ -2,23 +2,23 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/snowlynxsoftware/ozs-api/server/middleware"
 	"github.com/snowlynxsoftware/ozs-api/server/services"
+	"github.com/snowlynxsoftware/ozs-api/server/util"
 )
 
 type AdminController struct {
 	authMiddleware *middleware.AuthMiddleware
-	adminService *services.AdminService
+	adminService   *services.AdminService
 }
 
 func NewHAdminController(authMiddleware *middleware.AuthMiddleware, adminService *services.AdminService) *AdminController {
 	return &AdminController{
 		authMiddleware: authMiddleware,
-		adminService: adminService,
+		adminService:   adminService,
 	}
 }
 
@@ -34,7 +34,7 @@ func (c *AdminController) banUser(w http.ResponseWriter, r *http.Request) {
 
 	userContext, err := c.authMiddleware.Authorize(r, nil)
 	if err != nil {
-		fmt.Println(err.Error())
+		util.LogErrorWithStackTrace(err)
 		http.Error(w, "an error occurred when verifying auth status", http.StatusUnauthorized)
 		return
 	}
