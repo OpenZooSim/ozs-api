@@ -47,6 +47,8 @@ func (s *AppServer) Start() {
 	userTypeRepository := repositories.NewUserTypeRepository(s.DB)
 	userRepository := repositories.NewUserRepository(s.DB)
 	userLoginHistoryRepository := repositories.NewUserLoginHistoryRepository(s.DB)
+	shardRepository := repositories.NewShardRepository(s.DB)
+	zooRepository := repositories.NewZooRepository(s.DB)
 
 	// Configure Services
 	emailService := services.NewEmailService(s.AppConfig.SendgridAPIKey)
@@ -54,6 +56,8 @@ func (s *AppServer) Start() {
 	tokenService := services.NewTokenService(s.AppConfig.JWTSecret)
 	authService := services.NewAuthService(userRepository, userLoginHistoryRepository, tokenService, cryptoService, emailService)
 	userService := services.NewUserService(userRepository, tokenService)
+	shardService := services.NewShardService(shardRepository)
+	zooService := services.NewZooService(zooRepository)
 
 	// Configure Middleware
 	authMiddleware := middleware.NewAuthMiddleware(userService, userTypeRepository)
@@ -63,6 +67,8 @@ func (s *AppServer) Start() {
 	s.Router.Mount("/settings", controllers.NewSettingsController().MapController())
 	s.Router.Mount("/users", controllers.NewUserController(userService).MapController())
 	s.Router.Mount("/auth", controllers.NewAuthController(authMiddleware, userService, authService).MapController())
+	s.Router.Mount("/shards", controllers.NewShardController(shardService).MapController())
+	s.Router.Mount("/zoos", controllers.NewZooController(authMiddleware, zooService).MapController())
 
 	// Catch-all route
 	s.Router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
